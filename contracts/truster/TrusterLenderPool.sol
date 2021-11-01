@@ -22,13 +22,13 @@ contract TrusterLenderPool is ReentrancyGuard {
     {
         uint256 balanceBefore = damnValuableToken.balanceOf(address(this));
         require(balanceBefore >= borrowAmount, "Not enough tokens in pool");
-        
         damnValuableToken.transfer(borrower, borrowAmount);
         (bool success, ) = target.call(data);
         require(success, "External call failed");
 
         uint256 balanceAfter = damnValuableToken.balanceOf(address(this));
         require(balanceAfter >= balanceBefore, "Flash loan hasn't been paid back");
+        
     }
 
 }
