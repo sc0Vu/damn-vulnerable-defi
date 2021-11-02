@@ -22,12 +22,12 @@ contract AttackRewarder {
     address payable private owner;
 
     modifier onlyPool() {
-        require(msg.sender == address(pool), "ZZ");
+        require(msg.sender == address(pool));
         _;
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "GG");
+        require(msg.sender == owner);
         _;
     }
 
